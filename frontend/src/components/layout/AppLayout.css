@@ -1,0 +1,46 @@
+.align-right {
+    margin-left: auto;
+}
+
+.content-container {
+    padding: 50px;
+}
+
+.content-container > div {
+    background: #fff;
+    padding: 24px;
+    min-height: 280px;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.header {
+    background: #fff;
+}
+
+.header-container {
+    background: #fff;
+    display: flex;
+    align-items: center;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-logo {
+    height: 40px;
+    margin-right: 20px;
+}
+
+.layout {
+    min-height: 100vh;
+}
+
+.navbar {
+    line-height: 64px;
+}

@@ -1,0 +1,15 @@
+{
+  "short_name": "A3P",
+  "name": "Adaptive Analysis Application Platform",
+  "icons": [
+    {
+      "src": "favicon.jpg",
+      "sizes": "28x28",
+      "type": "image/jpeg"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

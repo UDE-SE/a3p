@@ -1,0 +1,10 @@
+from node:12
+
+
+workdir /opt/a3p/frontend
+
+copy ./frontend .
+
+run npm install
+
+cmd npm start

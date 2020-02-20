@@ -1,0 +1,20 @@
+from python:3.7-slim
+
+
+workdir /opt/a3p
+
+copy requirements.txt .
+
+run pip install --no-cache-dir -r requirements.txt
+
+workdir /opt/a3p/dblib
+
+copy backend_db_access .
+run python setup.py install
+
+workdir /opt/a3p/services
+copy backend_services .
+
+workdir /opt/a3p/services/src
+
+CMD python3 run.py
