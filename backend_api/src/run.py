@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 
 from flask import Flask
@@ -21,7 +22,7 @@ app = Flask(__name__)
 for key in flask_config:
     app.config[key] = flask_config[key]
 
-cors = CORS(app, resources={'/api/*': {'origins': '*'}})
+
 api = Api(app, prefix='/api/1')
 jwt = JWTManager(app)
 
@@ -47,9 +48,18 @@ api.add_resource(TemperatureResource, '/temperature')
 api.add_resource(AuthResource, '/auth')
 
 
-for _ in range(0, 18):
+is_prod = len(os.getenv('VISEABLE_PRODUCTION', '')) > 0
+
+
+# enable CORS for development
+if not is_prod:
+    cors = CORS(app, resources={'/api/*': {'origins': '*'}})
+
+
+# initialize databases
+for _ in range(0, 3):
     try:
-        init_db()
+        init_db(is_prod)
         break
     except ConnectionError:
         logging.warning('Initializing database failed. Retry ...')

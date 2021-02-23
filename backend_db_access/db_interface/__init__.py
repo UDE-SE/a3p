@@ -27,9 +27,9 @@ influx_df_client = DataFrameClient(influx_host, influx_port, 'root', 'root', 'da
 influx_client = InfluxDBClient(influx_host, influx_port, 'root', 'root', 'database')
 
 
-def init():
+def init(is_prod):
     init_influx()
-    init_mongo()
+    init_mongo(is_prod)
 
 
 def init_influx():
@@ -41,7 +41,7 @@ def init_influx():
     if {'name': 'essen_temperatures'} not in influx_df_client.get_list_measurements():
         # 10 minute values
         url = ('https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/'
-               '10_minutes/air_temperature/historical/10minutenwerte_tu_01303_20100101_20191231_hist.zip')
+               '10_minutes/air_temperature/historical/10minutenwerte_TU_01303_20100101_20191231_hist.zip')
         zip_file = requests.get(url).content
         archive = ZipFile(io.BytesIO(zip_file), mode='r')
         with archive.open('produkt_zehn_min_tu_20100101_20191231_01303.txt') as text_file:
@@ -54,8 +54,8 @@ def init_influx():
     # ### example implementation ###
 
 
-def init_mongo():
-    if mongodb.user.count() == 0:
+def init_mongo(is_prod):
+    if not is_prod and mongodb.user.count() == 0:
         mongodb.user.create_index('username', unique=True)
         admin_user = User(username='admin', firstname='Admin', lastname='Admin',
                           email='admin@example.com', roles=[Roles.USER, Roles.ADMIN],
@@ -66,6 +66,8 @@ def init_mongo():
         logging.info('Default users created.')
         mongodb.user.insert_one(vars(admin_user))
         mongodb.user.insert_one(vars(normal_user))
+
+    mongodb.user.create_index('username', unique=True)
     create_mongo_indices()
 
 
