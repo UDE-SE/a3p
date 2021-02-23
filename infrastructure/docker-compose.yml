@@ -1,19 +1,19 @@
 version: "3.7"
 services:
-  redis:
-    image: redis
+  a3p_redis:
+    image: redis:5
     ports:
       - 6379:6379
 
-  mongo:
-    image: mongo
+  a3p_mongo:
+    image: mongo:4.2
     volumes:
       - a3p_mongodata:/data/db
     ports:
       - 27017:27017
 
-  influxdb:
-    image: influxdb
+  a3p_influxdb:
+    image: influxdb:1.7
     volumes:
       - a3p_influxdbdata:/var/lib/influxdb
     ports:
@@ -21,7 +21,4 @@ services:
 
 volumes:
   a3p_mongodata:
-    name: a3p_mongodata
-
   a3p_influxdbdata:
-    name: a3p_influxdbdata
