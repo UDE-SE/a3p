@@ -1,5 +1,7 @@
+const apiURL = process.env.REACT_APP_API_URL;
+
 let Config = {
-    api_url: 'http://localhost:5000'
+    api_url: apiURL
 };
 
 export default Config;
