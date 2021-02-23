@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  a3p_api:
+    build:
+      context: ./../..
+      dockerfile: docker/dockerfiles/backend_api/Dockerfile
+    ports:
+      - target: 80
+        published: ${DEV_API_PORT}
+        protocol: tcp
+        mode: host
+
+  a3p_frontend:
+    build:
+      context: ./../..
+      dockerfile: docker/dockerfiles/frontend/Dockerfile
+      args:
+        API_URL: "http://localhost:${DEV_API_PORT}"
+    ports:
+      - target: 80
+        published: ${DEV_FRONTEND_PORT}
+        protocol: tcp
+        mode: host

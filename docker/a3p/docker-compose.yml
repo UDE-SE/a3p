@@ -1,16 +1,14 @@
 version: "3.7"
 services:
   a3p_redis:
-    image: redis
-    restart: always
+    image: redis:5
     networks:
       a3p_network:
         aliases:
           - redis
 
   a3p_mongo:
-    image: mongo
-    restart: always
+    image: mongo:4.2
     volumes:
       - a3p_mongodata:/data/db
     networks:
@@ -19,8 +17,7 @@ services:
           - mongo
 
   a3p_influxdb:
-    image: influxdb
-    restart: always
+    image: influxdb:1.7
     volumes:
       - a3p_influxdbdata:/var/lib/influxdb
     networks:
@@ -29,47 +26,34 @@ services:
           - influx
 
   a3p_services:
+    build:
+      context: ./../..
+      dockerfile: docker/dockerfiles/backend_services/Dockerfile
     image: a3p_services
-    restart: always
     networks:
       a3p_network:
         aliases:
           - services
 
   a3p_api:
-    image: a3p_api
-    restart: always
+    image: "a3p_api"
     depends_on:
       - a3p_mongo
       - a3p_influxdb
       - a3p_redis
       - a3p_services
-    ports:
-      - target: 5000
-        published: 5000
-        protocol: tcp
-        mode: host
     networks:
       a3p_network:
 
   a3p_frontend:
-    image: a3p_frontend
-    restart: always
-    ports:
-      - target: 3000
-        published: 80
-        protocol: tcp
-        mode: host
+    image: "a3p_frontend"
     networks:
       a3p_network:
 
 volumes:
   a3p_mongodata:
-    name: a3p_mongodata
-
   a3p_influxdbdata:
-    name: a3p_influxdbdata
 
 networks:
-  a3p_network:
-    driver: bridge
+   a3p_network:
+     driver: bridge

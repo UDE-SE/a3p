@@ -1,0 +1,54 @@
+version: "3.7"
+services:
+  a3p_redis:
+    restart: always
+
+  a3p_mongo:
+    restart: always
+
+  a3p_influxdb:
+    restart: always
+
+  a3p_services:
+    restart: always
+
+  a3p_api:
+    build:
+      context: ./../..
+      dockerfile: docker/dockerfiles/backend_api/Dockerfile
+      args:
+        PRODUCTION: 'true'
+    restart: always
+    networks:
+      gateway:
+    ports:
+      - target: 80
+        published: ${HOST_API_PORT}
+        protocol: tcp
+        mode: host
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.a3p_api.rule=Host(`${HOST_URL}`) && PathPrefix(`/api/`)"
+
+  a3p_frontend:
+    build:
+      context: ./../..
+      dockerfile: docker/dockerfiles/frontend/Dockerfile
+      args:
+        API_URL: "https://${HOST_URL}"
+    restart: always
+    networks:
+      gateway:
+    ports:
+      - target: 80
+        published: ${HOST_FRONTEND_PORT}
+        protocol: tcp
+        mode: host
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.a3p_frontend.rule=Host(`${HOST_URL}`)"
+
+networks:
+  gateway:
+    external: true
+    name: ${HOST_GATEWAY_NETWORK}
