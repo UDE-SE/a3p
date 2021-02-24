@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {Avatar, Dropdown, Layout, Menu, Icon, message} from 'antd'
-
-import * as logoSE from '../../static/se-logo.png'
-import './AppLayout.css'
+import {Avatar, Dropdown, Layout, Menu, message} from 'antd'
+import {LogoutOutlined} from '@ant-design/icons'
 
 import {globalStore} from '../../state/stateProvider'
 import {logoutSession} from '../../state/actions'
+
+import * as logoSE from '../../static/se-logo.png'
+import './AppLayout.css'
 
 
 const mapStateToProps = state => ({user: state.user});
@@ -30,7 +31,7 @@ class _AppLayout extends Component {
         const initials = (this.props.user.firstname[0] + this.props.user.lastname[0]).toUpperCase();
         const dropdownMenu = (
             <Menu>
-                <Menu.Item onClick={this.logout}><Icon type="logout"/>Logout</Menu.Item>
+                <Menu.Item onClick={this.logout}><LogoutOutlined />Logout</Menu.Item>
             </Menu>
         );
         const menuItems = this.props.routes.map(route => {

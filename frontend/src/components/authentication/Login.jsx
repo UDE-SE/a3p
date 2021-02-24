@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {Alert, Button, Card, Form, Icon, Input, Typography} from 'antd'
+import {Alert, Button, Card, Form, Input, Typography} from 'antd'
+import {LockOutlined, UserOutlined} from '@ant-design/icons'
 
 import * as logoSE from '../../static/se-logo.png'
 import './Login.css'
@@ -8,13 +9,13 @@ import {globalStore} from '../../state/stateProvider'
 import {authenticate} from '../../state/actions'
 
 
-class _Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             alertMessage: null
         }
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFinish = this.handleFinish.bind(this);
     }
 
     setAlertMessage(msg) {
@@ -23,7 +24,7 @@ class _Login extends Component {
         } else {
             this.setState({
                 alertMessage: <Alert message={msg} type='error' showIcon className='login-alert'/>
-            })
+            });
         }
     }
 
@@ -39,18 +40,12 @@ class _Login extends Component {
         }));
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
+    handleFinish(values) {
         this.setAlertMessage(null);
-        this.props.form.validateFields((err, values) => {
-            if (err == null) {
-                this.login(values.username, values.password);
-            }
-        });
+        this.login(values.username, values.password);
     }
 
     render() {
-        const {getFieldDecorator} = this.props.form;
         const {Title} = Typography;
 
         let alertComponent = null;
@@ -64,28 +59,14 @@ class _Login extends Component {
                     <div className='login-logo'><img src={logoSE} alt='SE Logo' className='login-logo'/></div>
                     <Title level={3} className='login-title'>Login</Title>
                     {alertComponent}
-                    <Form onSubmit={this.handleSubmit}>
-                        <Form.Item>
-                            {getFieldDecorator('username', {
-                                rules: [{required: true, message: 'Please input your username!'}],
-                                validateTrigger: false
-                            })(
-                                <Input
-                                    prefix={<Icon type='user' className='login-icon'/>}
-                                    placeholder='Username'
-                                />
-                            )}
+                    <Form onFinish={this.handleFinish}>
+                        <Form.Item name='username' rules={[{required: true, message: 'Please input your username!'}]}
+                                   validateTrigger={false}>
+                            <Input prefix={<UserOutlined className='login-icon'/>} placeholder='Username'/>
                         </Form.Item>
-                        <Form.Item>
-                            {getFieldDecorator('password', {
-                                rules: [{required: true, message: 'Please input your password!'}],
-                                validateTrigger: false
-                            })(
-                                <Input.Password
-                                    prefix={<Icon type='lock' className='login-icon'/>}
-                                    placeholder='Password'
-                                />
-                            )}
+                        <Form.Item name='password' rules={[{required: true, message: 'Please input your password!'}]}
+                                   validateTrigger={false}>
+                            <Input.Password prefix={<LockOutlined className='login-icon'/>} placeholder='Password'/>
                         </Form.Item>
                         <Form.Item>
                             <div className='login-btns'>
@@ -99,6 +80,4 @@ class _Login extends Component {
     }
 }
 
-const Login = Form.create({name: 'login'})(_Login);
-
-export default Login
+export default Login;
