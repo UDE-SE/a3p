@@ -38,7 +38,7 @@ class MessageResource(Resource):
     }
 
     def get(self):
-        args = parser.parse(self._user_args, request)
+        args = parser.parse(self._user_args, request, location='query')
         param = args['param']
 
         if param == 'short':
@@ -65,7 +65,7 @@ class TemperatureResource(Resource):
     }
 
     def get(self):
-        args = parser.parse(self._user_args, request)
+        args = parser.parse(self._user_args, request, location='query')
         start = args['start']
         end = args['end']
         return json.loads(example.get_temperatures(start, end).to_json())
