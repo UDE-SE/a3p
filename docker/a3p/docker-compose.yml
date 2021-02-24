@@ -36,7 +36,7 @@ services:
           - services
 
   a3p_api:
-    image: "a3p_api"
+    image: a3p_api
     depends_on:
       - a3p_mongo
       - a3p_influxdb
@@ -46,7 +46,7 @@ services:
       a3p_network:
 
   a3p_frontend:
-    image: "a3p_frontend"
+    image: a3p_frontend
     networks:
       a3p_network:
 
