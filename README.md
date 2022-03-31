@@ -1,6 +1,6 @@
 # Adaptive Analysis Application Platform (A3P)
 
-Fancy web application for doing things and stuff.
+Web application to host large scale sensor and event data and run analysis tasks on it.
 
 
 
